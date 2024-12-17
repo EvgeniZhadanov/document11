@@ -12,6 +12,7 @@ using System.Security.Cryptography;
 using Xceed.Words.NET;
 using System.Net;
 using Xceed.Document.NET;
+using System.Xml.Linq;
 
 namespace ConsoleApp1
 {
@@ -30,32 +31,39 @@ namespace ConsoleApp1
             return bank as JObject;
         }
 
+        static DateTime now = DateTime.Now;
         static void Main(string[] args)
         {
+
+            var placeholders = new Dictionary<string, string>();
+            placeholders["{{ContractNumber}}"] = now.ToString("ddmmyyyy/hh:mm");
+            placeholders["{{ContractDate}}"] = now.ToLongDateString();
+
             Console.WriteLine("Введите наименование контрагента:");
-            string counterparty = Console.ReadLine();
-            Console.WriteLine("Введите имя клиента:");
+            placeholders["{{counterparty}}"] = Console.ReadLine();
+            Console.WriteLine("Введите ФИО руковадителя:");
             string director = Console.ReadLine();
+            Person person = new Person(director);
+            placeholders["{{longname}}"] = person.LongName();
+            placeholders["{{shortname}}"] = person.ShortName();
+
             Console.WriteLine("Введите ИНН клиента:");
-            string inn = Console.ReadLine();
+            placeholders["{{inn}}"] = Console.ReadLine();
             Console.WriteLine("Введите ОГРН клиента:");
-            string ogrn = Console.ReadLine();
+            placeholders["{{ogrn}}"] = Console.ReadLine();
             Console.WriteLine("Введите расчётный счёт клиента:");
-            string currentaccount = Console.ReadLine();
+            placeholders["{{currentaccount}}"] = Console.ReadLine();
 
             Console.WriteLine("Введите БИК банка:");
-            string bik = Console.ReadLine();
-            string correspondentaccount = String.Empty;
-            string bankname = String.Empty;
-
+            
             // Загрузка данных из JSON файла
-            var bankData = GetBankDataByBik(bik);
+            var bankData = GetBankDataByBik(Console.ReadLine());
 
             if (bankData != null)
             {
-                correspondentaccount = bankData["ks"].ToString();
-                bankname = bankData["name"].ToString();
-                //{bankData["address"]};
+                placeholders["{{bik}}"] = bankData["bik"].ToString();
+                                placeholders["{{bankname}}"] = bankData["name"].ToString();
+                placeholders["{{correspondentaccount}}"] = bankData["ks"].ToString();
             }
             else
             {
@@ -63,19 +71,24 @@ namespace ConsoleApp1
             }
 
             Console.WriteLine("Введите адрес клиента:");
-            string address = Console.ReadLine();
+            placeholders["{{address}}"] = Console.ReadLine();
             Console.WriteLine("введите наименование товара");
-            string product = Console.ReadLine();
+            placeholders["{{product}}"] = Console.ReadLine();
+
             Console.WriteLine("введите количество");
-            int amount = Convert.ToInt32(Console.ReadLine());
+            int _amount = int.Parse(Console.ReadLine());
+            placeholders["{{amount}}"] = _amount.ToString();
             Console.WriteLine("введите цену за еденицу");
-            decimal price = Convert.ToDecimal(Console.ReadLine());
-            decimal result = price * amount;
+            decimal _price = decimal.Parse(Console.ReadLine());
+            placeholders["{{price}}"] = _price.ToString();
 
+            decimal _result = _price * _amount;
+            placeholders["{{result}}"] = _result.ToString();
 
-            Replacedata document = new Replacedata(
-                counterparty, director, inn, ogrn, address, currentaccount, bik, correspondentaccount, bankname, product, amount, price, result);
             
+
+            Replacedata replacedata = new Replacedata();
+            replacedata.FillTemplate(placeholders);
             Console.WriteLine("готов");
             Console.Read();
         }
