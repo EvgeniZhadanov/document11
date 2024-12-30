@@ -11,33 +11,33 @@ using Xceed.Words.NET;
 
 namespace ConsoleApp1
 {
-        internal class Replacedata
+        internal static class Replacedata
             {
-                        public void FillTemplate(Dictionary<string, string> placeholders)
+        public static void FillTemplate(Dictionary<string, string> placeholders)
         {
-            List<string> templatePath = new List<string>
-                { "Договор Поставки.docx", "Накладная_ТОРГ-12.docx", "счёт шаблон.docx"};
-            string outputDirectory = "D:\\document\\";
+// получаем путь к папке с файломи шаблонов
+            string filePath = @"D:\c++\1\bin\Debug\TemplateDocuments";
+            var templatePath  = Directory.GetFiles(filePath);            
 
-            foreach (var tPath in templatePath)
-            {
-                string outputPath = Path.Combine(outputDirectory, Path.GetFileName(tPath));
-
-                using (DocX document = DocX.Load(tPath))
+            // создаём путь к папке с готовыми документами
+                string outputDirectory = "D:\\document\\";
+            // перебираем папку с шаблонами
+                foreach (var tPath in templatePath)
                 {
-                    foreach (var placeholder in placeholders)
+                // определяем файл для изменения по шаблону
+                    string outputPath = Path.Combine(outputDirectory, Path.GetFileName(tPath));
+                // открываем файл для изменения
+                    using (DocX document = DocX.Load(tPath))
                     {
-                        document.ReplaceText(placeholder.Key, placeholder.Value);
-
-                        
-
-                            
+                    // перебираем ключи для замены на значения
+                        foreach (var placeholder in placeholders)
+                        {
+                            document.ReplaceText(placeholder.Key, placeholder.Value);
+                        }
+                        document.SaveAs(outputPath);
                     }
-                    document.SaveAs(outputPath);
                 }
             }
-        }
-
-            
+                    
     }
 }

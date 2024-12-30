@@ -11,27 +11,26 @@ namespace ConsoleApp1
 {
     internal class Person
     {
-                public Person(string director)
+                public Person(string _surname, string _name, string _patronymic)
         {
-             strings = director.Split(' ');
-        }
-        public string[] strings { get; set; } 
-        public string Director { set; get; } 
-
+                        Surname = _surname;
+            Name = _name;
+            Patronymic = _patronymic;
+                    }
         
+        public string Surname { set; get; }
+        public string Name{ set; get; } 
+                public string Patronymic{ set; get; }
+                
 
-
-        public string ShortName()
+                public string ShortName()
         {
-            string shortname = strings[0].Trim(' ');
-            char n = strings[1].Trim(' ')[0];
-            char p = strings[2].Trim(' ')[0];
-            shortname += " " + n + ". " + p + ".";
-            return shortname.ToUpper();
+            return $"{ Surname.Trim(' ')} {Name.Trim(' ')[0]}. {Patronymic.Trim(' ')[0]}.".ToUpper();
         }
+
         public string LongName()
         {
-            string longname = strings[0].Trim(' ') + " " + strings[1].Trim(' ') + " " + strings[2].Trim(' ').ToString();
+            string longname = $"{Surname.Trim(' ')} {Name.Trim(' ')} {Patronymic.Trim(' ')}";
             return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(longname);
         }
 

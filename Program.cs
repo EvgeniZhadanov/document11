@@ -22,8 +22,7 @@ namespace ConsoleApp1
 
         static JObject GetBankDataByBik(string bik)
         {
-            //string jsonFilePath = @"C:\Users\Евгений\Desktop\1.json";
-            var jsonData = File.ReadAllText("1.json");
+                        var jsonData = File.ReadAllText("1.json");
             var banks = JArray.Parse(jsonData);
 
             var bank = banks.FirstOrDefault(b => b["bik"].ToString() == bik);
@@ -41,9 +40,13 @@ namespace ConsoleApp1
 
             Console.WriteLine("Введите наименование контрагента:");
             placeholders["{{counterparty}}"] = Console.ReadLine();
-            Console.WriteLine("Введите ФИО руковадителя:");
-            string director = Console.ReadLine();
-            Person person = new Person(director);
+            Console.WriteLine("Введите ФИО руковадителя. \n фомилия:");
+            string surname = Console.ReadLine();
+            Console.Write("Имя:");
+            string name = Console.ReadLine();
+            Console.Write("Отчество:");
+            string patronymic = Console.ReadLine(); 
+            Person person = new Person(surname, name, patronymic);
             placeholders["{{longname}}"] = person.LongName();
             placeholders["{{shortname}}"] = person.ShortName();
 
@@ -55,11 +58,8 @@ namespace ConsoleApp1
             placeholders["{{currentaccount}}"] = Console.ReadLine();
 
             Console.WriteLine("Введите БИК банка:");
-            
-            // Загрузка данных из JSON файла
             var bankData = GetBankDataByBik(Console.ReadLine());
-
-            if (bankData != null)
+                        if (bankData != null)
             {
                 placeholders["{{bik}}"] = bankData["bik"].ToString();
                                 placeholders["{{bankname}}"] = bankData["name"].ToString();
@@ -81,15 +81,13 @@ namespace ConsoleApp1
             Console.WriteLine("введите цену за еденицу");
             decimal _price = decimal.Parse(Console.ReadLine());
             placeholders["{{price}}"] = _price.ToString();
-
-            decimal _result = _price * _amount;
+                        decimal _result = _price * _amount;
             placeholders["{{result}}"] = _result.ToString();
 
             
-
-            Replacedata replacedata = new Replacedata();
-            replacedata.FillTemplate(placeholders);
-            Console.WriteLine("готов");
+            //Replacedata replacedata = new Replacedata();
+            Replacedata.FillTemplate(placeholders);
+            Console.WriteLine("Документы созданы");
             Console.Read();
         }
     }
