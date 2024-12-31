@@ -17,19 +17,23 @@ namespace ConsoleApp1
         {
 // получаем путь к папке с файломи шаблонов
             string filePath = @"D:\c++\1\bin\Debug\TemplateDocuments";
-            var templatePath  = Directory.GetFiles(filePath);            
+            var templatePath  = Directory.GetFiles(filePath);
+                        // создаём путь к папке с готовыми документами
+            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                        string outputDirectory  = Path.Combine(documentsPath, "Proba100");
+            // проверяем папку на наличие 
+            DirectoryInfo directoryInfo = new DirectoryInfo(outputDirectory);
+            if (!directoryInfo.Exists) { directoryInfo.Create(); }
 
-            // создаём путь к папке с готовыми документами
-                string outputDirectory = "D:\\document\\";
             // перебираем папку с шаблонами
-                foreach (var tPath in templatePath)
+            foreach (var tPath in templatePath)
                 {
                 // определяем файл для изменения по шаблону
                     string outputPath = Path.Combine(outputDirectory, Path.GetFileName(tPath));
                 // открываем файл для изменения
                     using (DocX document = DocX.Load(tPath))
                     {
-                    // перебираем ключи для замены на значения
+                    // перебираем ключи для замены
                         foreach (var placeholder in placeholders)
                         {
                             document.ReplaceText(placeholder.Key, placeholder.Value);

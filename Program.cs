@@ -83,12 +83,11 @@ namespace ConsoleApp1
             placeholders["{{price}}"] = _price.ToString();
                         decimal _result = _price * _amount;
             placeholders["{{result}}"] = _result.ToString();
-
+                        
             
-            //Replacedata replacedata = new Replacedata();
             Replacedata.FillTemplate(placeholders);
-            Console.WriteLine("Документы созданы");
-            Console.Read();
+            Console.WriteLine("Готово");
+            Console.Read();            
         }
     }
 }

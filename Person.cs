@@ -30,8 +30,9 @@ namespace ConsoleApp1
 
         public string LongName()
         {
-            string longname = $"{Surname.Trim(' ')} {Name.Trim(' ')} {Patronymic.Trim(' ')}";
-            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(longname);
+            //string longname = $"{Surname.Trim(' ')} {Name.Trim(' ')} {Patronymic.Trim(' ')}";
+            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(
+                $"{Surname.Trim(' ')} {Name.Trim(' ')} {Patronymic.Trim(' ')}");
         }
 
     }
