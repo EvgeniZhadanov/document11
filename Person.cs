@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xceed.Document.NET;
 
@@ -13,11 +15,11 @@ namespace ConsoleApp1
     {
                 public Person(string _surname, string _name, string _patronymic)
         {
-                        Surname = _surname;
-            Name = _name;
-            Patronymic = _patronymic;
+                        Surname = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_surname.Trim(' '));
+            Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_name.Trim(' '));
+            Patronymic = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_patronymic.Trim(' '));
                     }
-        
+
         public string Surname { set; get; }
         public string Name{ set; get; } 
                 public string Patronymic{ set; get; }
@@ -25,15 +27,14 @@ namespace ConsoleApp1
 
                 public string ShortName()
         {
-            return $"{ Surname.Trim(' ')} {Name.Trim(' ')[0]}. {Patronymic.Trim(' ')[0]}.".ToUpper();
+            return $"{ Surname} {Name[0]}.{Patronymic[0]}.";
         }
 
         public string LongName()
         {
-            //string longname = $"{Surname.Trim(' ')} {Name.Trim(' ')} {Patronymic.Trim(' ')}";
-            return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(
-                $"{Surname.Trim(' ')} {Name.Trim(' ')} {Patronymic.Trim(' ')}");
+            return $"{Surname} {Name} {Patronymic}";
         }
 
+        
     }
 }
