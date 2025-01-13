@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace ConsoleApp1
         {
             // получаем путь к папке с файломи шаблонов
             //string filePath = Way.SettingsWay;
+            
             var templatePath = Directory.GetFiles(Way.SettingsWay());
             // создаём путь к папке с готовыми документами
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);

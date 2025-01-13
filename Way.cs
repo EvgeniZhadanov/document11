@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,9 @@ namespace ConsoleApp1
         // передача пути программе к шаблонам из файла Settings
         public static string SettingsWay()
         {
+            string occupation = ConfigurationManager.AppSettings["keyTemplate"];
             string path = String.Empty;
-            using (StreamReader settingsStream = new StreamReader("Settings.txt"))
+            using (StreamReader settingsStream = new StreamReader(occupation ))
             {
                 string settingsRow = String.Empty;
                 while (!settingsStream.EndOfStream)
