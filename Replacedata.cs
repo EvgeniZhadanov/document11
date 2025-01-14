@@ -18,9 +18,9 @@ namespace ConsoleApp1
         public static void FillTemplate(Dictionary<string, string> placeholders)
         {
             // получаем путь к папке с файломи шаблонов
-            //string filePath = Way.SettingsWay;
-            
-            var templatePath = Directory.GetFiles(Way.SettingsWay());
+            string filePath = ConfigurationManager.AppSettings["keyTemplate"];
+
+            var templatePath = Directory.GetFiles(filePath);
             // создаём путь к папке с готовыми документами
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             string outputDirectory = Path.Combine(documentsPath, "Proba100\\Готовые документы");
